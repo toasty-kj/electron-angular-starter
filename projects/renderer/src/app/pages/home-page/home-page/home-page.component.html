@@ -1,0 +1,25 @@
+<div class="max-w-sm mx-auto">
+  <loading-toast [isLoading]="isDownloading" [content]="'downloading new version...'"></loading-toast>
+  <toast [toastContent]="toastContent"></toast>
+  <div class="mb-5">
+    <app-file-uploader [infoContent]="'json fileを選択してください。'" (filePathList)="getFilePath($event)"></app-file-uploader>
+  </div>
+  <div class="max-w-sm">
+    <label for="textarea-label" class="block text-sm font-medium mb-2 dark:text-white">Comment</label>
+    <textarea id="textarea-label"
+      class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-neutral-900 dark:border-neutral-700 dark:text-neutral-400 dark:placeholder-neutral-500 dark:focus:ring-neutral-600"
+      rows="3" placeholder="JSONを貼り付けてください"></textarea>
+  </div>
+  <!-- <div class="mb-5">
+    <dropdown-form
+      [title]="'Select Fluorescence'"
+      [label]="'Select Fluorescence'"
+      [infoContent]="'蛍光の種類を選択してください'"
+      (tags)="getTag($event)"
+    ></dropdown-form>
+  </div> -->
+  <button (click)="_onSubmit()"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+    Submit
+  </button>
+</div>

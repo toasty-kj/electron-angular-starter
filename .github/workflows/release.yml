@@ -1,0 +1,54 @@
+name: Publish Electron App to Github Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build_and_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Create Python virtual environment
+        run: python3 -m venv .venv
+
+      - name: Activate Python virtual environment
+        run: |
+          if (IsWindows()) {
+            .\.venv\Scripts\Activate.ps1
+          } else {
+            source .venv/bin/activate
+          }
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Build Electron app
+        run: pyinstaller.exe projects/main/src/main.py
+
+      - name: Copy data files
+        run: cp -r projects/main/data dist
+
+      - name: Build frontend
+        run: npm-run-all -s build:el build:ng
+
+      - name: Publish Electron app to Github Release
+        uses: softprops/action-gh-release@v4
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+          files: dist/my-app-*.{exe,zip,dmg}
+
+      - name: Cleanup
+        run: |
+          if (IsWindows()) {
+            .\.venv\Scripts\Deactivate.ps1
+          } else {
+            deactivate
+          }
+          rm -rf .venv

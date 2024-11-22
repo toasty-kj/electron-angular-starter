@@ -1,0 +1,4 @@
+#!/usr/bin/env sh
+npm run format
+npx oxlint@latest
+. "${0%/*}/h"
